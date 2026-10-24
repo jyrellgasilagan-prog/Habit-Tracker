@@ -1,10 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Habit Tracker</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✅%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Habit Tracker helps you build daily routines with streaks, weekly goals, and private browser-based tracking.">
+<meta name="theme-color" content="#4C7DF0">
+<meta property="og:title" content="Habit Tracker">
+<meta property="og:description" content="Track daily habits with streaks, insight cards, and a private local-first experience.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3Eâœ…%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -47,7 +52,7 @@ input[type=text]{width:100%}
 .top{display:flex;align-items:center;gap:.9rem}
 .check{width:48px;height:48px;border-radius:50%;border:3px solid var(--c);background:none;cursor:pointer;display:grid;place-items:center;font-size:1.3rem;flex:none;transition:background .15s,transform .15s}
 .check.on{background:var(--c)}
-.check.on::after{content:"✓";color:#111;font-weight:800;font-size:1.3rem}
+.check.on::after{content:"âœ“";color:#111;font-weight:800;font-size:1.3rem}
 .check:active{transform:scale(.92)}
 .meta{flex:1;min-width:0}
 .name{font:700 1.15rem/1.25 var(--display);overflow-wrap:anywhere}
@@ -122,8 +127,8 @@ main{position:relative;z-index:1}
     <p id="date"></p>
     <p id="sum"></p>
   </div>
-  <svg id="ring" viewBox="0 0 72 72" role="img" aria-label="Today’s progress"><circle cx="36" cy="36" r="29" fill="none" stroke="var(--line)" stroke-width="7"/><circle id="arc" cx="36" cy="36" r="29" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-dasharray="0 183" transform="rotate(-90 36 36)"/><text id="pct" x="36" y="41" text-anchor="middle">0%</text></svg>
-  <button class="iconbtn" id="theme" aria-label="Switch light or dark theme" title="Switch theme">◐</button>
+  <svg id="ring" viewBox="0 0 72 72" role="img" aria-label="Todayâ€™s progress"><circle cx="36" cy="36" r="29" fill="none" stroke="var(--line)" stroke-width="7"/><circle id="arc" cx="36" cy="36" r="29" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-dasharray="0 183" transform="rotate(-90 36 36)"/><text id="pct" x="36" y="41" text-anchor="middle">0%</text></svg>
+  <button class="iconbtn" id="theme" aria-label="Switch light or dark theme" title="Switch theme">â—</button>
 </header>
 <nav class="nav" aria-label="Page sections">
   <a href="#formtitle" data-go="formtitle">Add a habit</a>
@@ -137,7 +142,7 @@ main{position:relative;z-index:1}
 <h2 id="formtitle">Add a habit</h2>
 <form class="add" id="form" autocomplete="off">
   <select id="emoji" aria-label="Icon">
-    <option>💧</option><option>📚</option><option>🏃</option><option>🧘</option><option>💤</option><option>🥗</option><option>✍️</option><option>🎸</option><option>🧹</option><option>💊</option>
+    <option>ðŸ’§</option><option>ðŸ“š</option><option>ðŸƒ</option><option>ðŸ§˜</option><option>ðŸ’¤</option><option>ðŸ¥—</option><option>âœï¸</option><option>ðŸŽ¸</option><option>ðŸ§¹</option><option>ðŸ’Š</option>
   </select>
   <input type="text" id="name" placeholder="e.g. Drink 8 glasses of water" maxlength="60" required aria-label="Habit name">
   <select id="target" aria-label="Weekly goal">
@@ -160,7 +165,7 @@ main{position:relative;z-index:1}
 <div id="recs"></div>
 
 <h2 id="best">Best habits and how they work</h2>
-<p class="hint">Each one pairs a simple cue with a tiny first step. Open “How it works” for an example, then add it to your list.</p>
+<p class="hint">Each one pairs a simple cue with a tiny first step. Open â€œHow it worksâ€ for an example, then add it to your list.</p>
 <div id="lib"></div>
 
 <section class="policy" aria-labelledby="privacy">
@@ -174,13 +179,13 @@ main{position:relative;z-index:1}
 <ul>
 <li>Your habit data is stored in your own browser (localStorage) on your device. The app does not upload it to any server, and the developer cannot see it.</li>
 <li>The app does not use analytics, advertising or tracking cookies, and your data is not sold or shared.</li>
-<li>Google Fonts: the page loads its fonts from Google (fonts.googleapis.com). Google may receive your IP address and browser details when the fonts load, under Google’s own privacy policy.</li>
+<li>Google Fonts: the page loads its fonts from Google (fonts.googleapis.com). Google may receive your IP address and browser details when the fonts load, under Googleâ€™s own privacy policy.</li>
 <li>Hosting: the site is served by its hosting provider (GitHub Pages), which may keep standard server logs such as your IP address and the time of your visit.</li>
-<li>If you use “Download backup”, a file is saved to your device. Where you keep or send that file is up to you.</li>
+<li>If you use â€œDownload backupâ€, a file is saved to your device. Where you keep or send that file is up to you.</li>
 </ul>
 
 <h3>Deleting your information</h3>
-<p>Because your data stays on your device, you control it. Press “Delete everything” at the bottom of the page, or delete a single habit with its Delete button. You can also clear this site’s data in your browser settings. There is nothing stored on a server for the developer to delete.</p>
+<p>Because your data stays on your device, you control it. Press â€œDelete everythingâ€ at the bottom of the page, or delete a single habit with its Delete button. You can also clear this siteâ€™s data in your browser settings. There is nothing stored on a server for the developer to delete.</p>
 
 <h3>Safeguards and limits</h3>
 <p>Keeping data on your device means it is never sent over the internet by this app. It is not encrypted, though, so anyone who can use your browser profile or device can view it. Clearing your browser data, or using private browsing, will erase it unless you saved a backup.</p>
@@ -238,7 +243,7 @@ function row(h){
       <button class="check${h.done[t]?' on':''}" data-a="toggle" data-id="${h.id}" data-d="${t}" aria-pressed="${!!h.done[t]}" aria-label="Mark ${esc(h.name)} done today"></button>
       <div class="meta">
         <div class="name">${h.emoji} ${esc(h.name)}</div>
-        <div class="sub"><b>${st}</b> day streak · best ${best(h)} · <b>${wc}/${h.target}</b> this week${wc>=h.target?' ✓':''}</div>
+        <div class="sub"><b>${st}</b> day streak Â· best ${best(h)} Â· <b>${wc}/${h.target}</b> this week${wc>=h.target?' âœ“':''}</div>
       </div>
       <div class="tools">
         <button data-a="open" data-id="${h.id}" aria-expanded="${open}">${open?'Hide history':'History'}</button>
@@ -286,14 +291,14 @@ function burst(el,color,n=12){
 
 // best-habit library, recommendations and tips
 const LIB=[
-{id:'water',emoji:'💧',name:'Drink a glass of water',cat:'Body',target:7,color:COLORS[3],why:'Even mild dehydration can lower focus and energy.',cue:'After I turn off my alarm, I drink one full glass before coffee.',ex:'Fill a glass and leave it on your nightstand before bed. Drink it first thing in the morning, then tap the check.',easy:'Start with half a glass and add a second one at lunch.'},
-{id:'move',emoji:'🏃',name:'Move for 20 minutes',cat:'Body',target:5,color:COLORS[0],why:'Regular movement improves mood, sleep and heart health.',cue:'After dinner, I put on my shoes and walk around the block.',ex:'Walk for 20 minutes on Monday, Wednesday and Friday. Stretch for 10 minutes on Tuesday and Thursday. That covers a 5-day goal.',easy:'On a bad day, a 5-minute walk still counts and keeps your streak alive.'},
-{id:'sleep',emoji:'💤',name:'In bed by 11 pm',cat:'Rest',target:6,color:COLORS[4],why:'A steady bedtime makes it easier to fall asleep and wake up.',cue:'When my 10:30 pm alarm rings, I plug my phone in across the room.',ex:'Label the alarm “Wind down”. Dim the lights, charge your phone out of reach, and read until you feel sleepy.',easy:'Move your bedtime 15 minutes earlier each week instead of all at once.'},
-{id:'read',emoji:'📚',name:'Read 10 pages',cat:'Mind',target:5,color:COLORS[1],why:'Ten pages a day adds up to roughly 15 books a year.',cue:'After I get into bed, I read before I look at my phone.',ex:'Keep one book on your pillow. Read until you pass the bookmark by about ten pages, then tap the check.',easy:'Stuck? Read one page. Starting is the hard part.'},
-{id:'meditate',emoji:'🧘',name:'Meditate for 5 minutes',cat:'Mind',target:5,color:COLORS[5],why:'A short daily practice lowers stress and builds attention.',cue:'After I brush my teeth, I sit down and breathe for 5 minutes.',ex:'Set a 5-minute timer. Count each breath from 1 to 10, then start over. When your mind wanders, go back to 1.',easy:'Begin with 1 minute and add a minute each week.'},
-{id:'journal',emoji:'✍️',name:'Write 3 lines in a journal',cat:'Mind',target:7,color:COLORS[2],why:'Writing things down clears your head and shows patterns over time.',cue:'After I finish dinner, I write three lines before leaving the table.',ex:'Line 1: one good thing from today. Line 2: one thing that was hard. Line 3: your top priority for tomorrow.',easy:'No time? Write one sentence.'},
-{id:'veg',emoji:'🥗',name:'Eat a fruit or vegetable',cat:'Food',target:7,color:COLORS[0],why:'One extra serving a day is an easy way to eat better without a diet.',cue:'When I sit down for lunch, I add one fruit or vegetable to the plate.',ex:'Keep washed carrots or an apple at the front of the fridge. Put it on your plate first, then tap the check.',easy:'Pick the same item all week so there is nothing to decide.'},
-{id:'tidy',emoji:'🧹',name:'Tidy up for 10 minutes',cat:'Home',target:5,color:COLORS[1],why:'A small daily reset keeps clutter from piling up and lowers stress.',cue:'After I finish dinner, I set a 10-minute timer and tidy one area.',ex:'Monday: kitchen counter. Tuesday: desk. Wednesday: bathroom sink. Stop when the timer ends, even if you are not done.',easy:'Tidy only one surface, like your desk or bed.'}
+{id:'water',emoji:'ðŸ’§',name:'Drink a glass of water',cat:'Body',target:7,color:COLORS[3],why:'Even mild dehydration can lower focus and energy.',cue:'After I turn off my alarm, I drink one full glass before coffee.',ex:'Fill a glass and leave it on your nightstand before bed. Drink it first thing in the morning, then tap the check.',easy:'Start with half a glass and add a second one at lunch.'},
+{id:'move',emoji:'ðŸƒ',name:'Move for 20 minutes',cat:'Body',target:5,color:COLORS[0],why:'Regular movement improves mood, sleep and heart health.',cue:'After dinner, I put on my shoes and walk around the block.',ex:'Walk for 20 minutes on Monday, Wednesday and Friday. Stretch for 10 minutes on Tuesday and Thursday. That covers a 5-day goal.',easy:'On a bad day, a 5-minute walk still counts and keeps your streak alive.'},
+{id:'sleep',emoji:'ðŸ’¤',name:'In bed by 11 pm',cat:'Rest',target:6,color:COLORS[4],why:'A steady bedtime makes it easier to fall asleep and wake up.',cue:'When my 10:30 pm alarm rings, I plug my phone in across the room.',ex:'Label the alarm â€œWind downâ€. Dim the lights, charge your phone out of reach, and read until you feel sleepy.',easy:'Move your bedtime 15 minutes earlier each week instead of all at once.'},
+{id:'read',emoji:'ðŸ“š',name:'Read 10 pages',cat:'Mind',target:5,color:COLORS[1],why:'Ten pages a day adds up to roughly 15 books a year.',cue:'After I get into bed, I read before I look at my phone.',ex:'Keep one book on your pillow. Read until you pass the bookmark by about ten pages, then tap the check.',easy:'Stuck? Read one page. Starting is the hard part.'},
+{id:'meditate',emoji:'ðŸ§˜',name:'Meditate for 5 minutes',cat:'Mind',target:5,color:COLORS[5],why:'A short daily practice lowers stress and builds attention.',cue:'After I brush my teeth, I sit down and breathe for 5 minutes.',ex:'Set a 5-minute timer. Count each breath from 1 to 10, then start over. When your mind wanders, go back to 1.',easy:'Begin with 1 minute and add a minute each week.'},
+{id:'journal',emoji:'âœï¸',name:'Write 3 lines in a journal',cat:'Mind',target:7,color:COLORS[2],why:'Writing things down clears your head and shows patterns over time.',cue:'After I finish dinner, I write three lines before leaving the table.',ex:'Line 1: one good thing from today. Line 2: one thing that was hard. Line 3: your top priority for tomorrow.',easy:'No time? Write one sentence.'},
+{id:'veg',emoji:'ðŸ¥—',name:'Eat a fruit or vegetable',cat:'Food',target:7,color:COLORS[0],why:'One extra serving a day is an easy way to eat better without a diet.',cue:'When I sit down for lunch, I add one fruit or vegetable to the plate.',ex:'Keep washed carrots or an apple at the front of the fridge. Put it on your plate first, then tap the check.',easy:'Pick the same item all week so there is nothing to decide.'},
+{id:'tidy',emoji:'ðŸ§¹',name:'Tidy up for 10 minutes',cat:'Home',target:5,color:COLORS[1],why:'A small daily reset keeps clutter from piling up and lowers stress.',cue:'After I finish dinner, I set a 10-minute timer and tidy one area.',ex:'Monday: kitchen counter. Tuesday: desk. Wednesday: bathroom sink. Stop when the timer ends, even if you are not done.',easy:'Tidy only one surface, like your desk or bed.'}
 ];
 const openLib=new Set();
 document.addEventListener('toggle',e=>{const d=e.target;if(d.tagName==='DETAILS'&&d.dataset.id)d.open?openLib.add(d.dataset.id):openLib.delete(d.dataset.id)},true);
@@ -312,21 +317,21 @@ function tips(hs){
   const t=today(),out=[];
   if(!hs.length)return ['Start with one or two habits. Small wins build momentum faster than a long list.'];
   const hot=hs.filter(h=>streak(h)>=7).sort((a,b)=>streak(b)-streak(a))[0];
-  if(hot)out.push(`<b>${esc(hot.name)}</b> has a ${streak(hot)}-day streak. Decide tomorrow’s trigger tonight so the chain keeps going.`);
+  if(hot)out.push(`<b>${esc(hot.name)}</b> has a ${streak(hot)}-day streak. Decide tomorrowâ€™s trigger tonight so the chain keeps going.`);
   const hard=hs.map(h=>{const age=Math.max(1,Math.min(14,dayDiff(t,h.created)+1));let n=0;for(let i=0;i<age;i++)if(h.done[addDays(t,-i)])n++;return{h,age,r:n/age}}).filter(x=>x.age>=7).sort((a,b)=>a.r-b.r)[0];
   if(hard&&hard.r<.5)out.push(`<b>${esc(hard.h.name)}</b> is slipping. Shrink it to a two-minute version, or lower its weekly goal.`);
   const wd=Array(7).fill(0);let tot=0;
   hs.forEach(h=>Object.keys(h.done).forEach(k=>{wd[(new Date(k+'T00:00:00').getDay()+6)%7]++;tot++}));
   if(tot>=14)out.push(`${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][wd.indexOf(Math.min(...wd))]} is your weakest day. Plan an easier version for it.`);
   if(hs.every(h=>h.done[t]))out.push('Everything is done today. Rest and enjoy it.');
-  if(!out.length)out.push('Link each habit to something you already do, like “after I pour coffee, I…”. A cue beats willpower.');
+  if(!out.length)out.push('Link each habit to something you already do, like â€œafter I pour coffee, Iâ€¦â€. A cue beats willpower.');
   return out.slice(0,3);
 }
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-lib]');if(!b||b.disabled)return;
   const l=LIB.find(x=>x.id===b.dataset.lib);if(!l)return;
   S.habits.push({id:'h'+Date.now().toString(36),lib:l.id,created:today(),done:{},name:l.name,emoji:l.emoji,target:l.target,color:l.color});
-  save();render();toast(`Added “${l.name}”`);
+  save();render();toast(`Added â€œ${l.name}â€`);
 });
 
 // form
@@ -349,13 +354,13 @@ $('#list').addEventListener('click',e=>{
   const a=b.dataset.a;
   if(a==='toggle'){const d=b.dataset.d,all=()=>S.habits.length&&S.habits.every(x=>x.done[today()]),was=all();
     if(h.done[d])delete h.done[d];else{h.done[d]=1;burst(b,h.color)}
-    save();render();if(!was&&all()){burst($('#ring'),'#4C7DF0',18);toast('All done for today 🎉')}}
+    save();render();if(!was&&all()){burst($('#ring'),'#4C7DF0',18);toast('All done for today ðŸŽ‰')}}
   else if(a==='open'){S.open=S.open===h.id?null:h.id;save();render()}
   else if(a==='edit'){editId=h.id;$('#name').value=h.name;$('#emoji').value=h.emoji;$('#target').value=h.target;
     document.querySelector(`input[name=color][value="${h.color}"]`).checked=true;
     $('#formtitle').textContent='Edit habit';$('#save').textContent='Save changes';$('#cancel').hidden=false;
     $('#form').scrollIntoView({behavior:'smooth'});$('#name').focus()}
-  else if(a==='del'&&confirm(`Delete “${h.name}” and its history?`)){S.habits=S.habits.filter(x=>x!==h);save();render();toast('Habit deleted')}
+  else if(a==='del'&&confirm(`Delete â€œ${h.name}â€ and its history?`)){S.habits=S.habits.filter(x=>x!==h);save();render();toast('Habit deleted')}
 });
 
 // footer
@@ -376,13 +381,13 @@ $('#file').onchange=e=>{
     if(!Array.isArray(d.habits))throw 0;
     S={habits:d.habits.filter(h=>h&&h.id&&h.name&&h.done),theme:d.theme||null,open:null};
     save();applyTheme();render();toast('Backup restored');
-  }).catch(()=>toast('That file isn’t a valid backup'));
+  }).catch(()=>toast('That file isnâ€™t a valid backup'));
   e.target.value='';
 };
 $('#sample').onclick=()=>{
   if(S.habits.length&&!confirm('Add sample habits to your list?'))return;
   let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
-  [['💧','Drink 8 glasses of water',7,COLORS[3],.8],['📚','Read 20 pages',5,COLORS[1],.6],['🏃','Go for a run',3,COLORS[0],.45]].forEach(([emoji,name,target,color,p],i)=>{
+  [['ðŸ’§','Drink 8 glasses of water',7,COLORS[3],.8],['ðŸ“š','Read 20 pages',5,COLORS[1],.6],['ðŸƒ','Go for a run',3,COLORS[0],.45]].forEach(([emoji,name,target,color,p],i)=>{
     const done={};for(let k=0;k<70;k++)if(rnd()<p)done[addDays(today(),-k)]=1;
     S.habits.push({id:'s'+i+Date.now().toString(36),created:addDays(today(),-70),emoji,name,target,color,done});
   });
@@ -400,3 +405,4 @@ applyTheme();render();
 </script>
 </body>
 </html>
+
