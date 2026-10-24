@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Habit Tracker</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✅%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2F5F9;--panel:#fff;--ink:#18233B;--mute:#5B6780;--line:#D5DCE8;--accent:#4C7DF0;--on:#18233B;
+--display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--body:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;color-scheme:light}
+:root[data-theme=dark]{--bg:#0F1626;--panel:#151E33;--ink:#E8EDF7;--mute:#94A0B8;--line:#26324A;--accent:#7CA1FF;--on:#0F1626;color-scheme:dark}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0F1626;--panel:#151E33;--ink:#E8EDF7;--mute:#94A0B8;--line:#26324A;--accent:#7CA1FF;--on:#0F1626;color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-padding-top:1rem}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--body)}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1rem 4rem}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+header{display:flex;align-items:center;gap:1.25rem;padding:1rem 0 1.5rem;border-bottom:2px solid var(--ink)}
+h1{font:800 clamp(2rem,6vw,3rem)/1 var(--display);margin:0;letter-spacing:-.02em}
+#date{margin:.35rem 0 0;color:var(--mute)}
+#sum{margin:.1rem 0 0;font-weight:600}
+.head-text{flex:1}
+#ring{width:72px;height:72px;flex:none}
+#ring text{font:700 17px var(--display);fill:var(--ink)}
+.iconbtn{background:none;border:1px solid var(--line);border-radius:8px;width:40px;height:40px;cursor:pointer;font-size:1.1rem}
+.iconbtn:hover{border-color:var(--ink)}
+h2{font:700 1.25rem/1.2 var(--display);margin:2rem 0 .75rem}
+form.add{display:grid;grid-template-columns:auto 1fr auto;gap:.6rem;align-items:center;margin-top:1.25rem}
+form.add .full{grid-column:1/-1}
+input[type=text],select{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:.6rem .7rem;min-height:44px}
+input[type=text]{width:100%}
+.swatches{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.swatches label{cursor:pointer}
+.swatches input{position:absolute;opacity:0}
+.swatches span{display:block;width:28px;height:28px;border-radius:50%;background:var(--c);border:3px solid var(--bg);box-shadow:0 0 0 1px var(--line)}
+.swatches input:checked+span{box-shadow:0 0 0 3px var(--ink)}
+.swatches input:focus-visible+span{outline:3px solid var(--accent);outline-offset:3px}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:8px;padding:.6rem 1.1rem;font-weight:600;cursor:pointer;min-height:44px}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line)}
+.btn:hover{opacity:.88}
+.hint{color:var(--mute);font-size:.9rem}
+.habit{border-top:1px solid var(--line);padding:1rem 0}
+.habit:last-child{border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;gap:.9rem}
+.check{width:48px;height:48px;border-radius:50%;border:3px solid var(--c);background:none;cursor:pointer;display:grid;place-items:center;font-size:1.3rem;flex:none;transition:background .15s,transform .15s}
+.check.on{background:var(--c)}
+.check.on::after{content:"✓";color:#111;font-weight:800;font-size:1.3rem}
+.check:active{transform:scale(.92)}
+.meta{flex:1;min-width:0}
+.name{font:700 1.15rem/1.25 var(--display);overflow-wrap:anywhere}
+.sub{color:var(--mute);font-size:.9rem}
+.sub b{color:var(--ink)}
+.tools{display:flex;gap:.25rem}
+.tools button{background:none;border:0;color:var(--mute);cursor:pointer;padding:.4rem .5rem;border-radius:6px;min-height:36px}
+.tools button:hover{color:var(--ink);background:var(--line)}
+.strip{display:flex;gap:.35rem;margin:.8rem 0 0 calc(48px + .9rem)}
+.day{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:none;cursor:pointer;font-size:.8rem;font-weight:600;color:var(--mute)}
+.day.on{background:var(--c);border-color:var(--c);color:#111}
+.day:disabled{opacity:.35;cursor:default}
+.heatwrap{margin:.9rem 0 0 calc(48px + .9rem);overflow-x:auto;padding-bottom:.25rem}
+.heat{display:grid;grid-template-rows:repeat(7,13px);grid-auto-flow:column;grid-auto-columns:13px;gap:3px;width:max-content}
+.c{background:var(--line);border-radius:3px;display:block}
+.c.on{background:var(--c)}
+.c.f{background:none}
+.empty{padding:1.5rem 0;color:var(--mute)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1.25rem 1rem;margin:0;padding:0}
+.stats div{border-left:3px solid var(--ink);padding-left:.75rem}
+.stats dt{color:var(--mute);font-size:.88rem}
+.stats dd{margin:0;font:800 1.9rem/1.1 var(--display)}
+.bars{display:flex;gap:.5rem;align-items:flex-end;height:90px;margin-top:1rem}
+.bars div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:.3rem;height:100%;font-size:.8rem;color:var(--mute)}
+.bars i{display:block;width:100%;background:var(--accent);border-radius:4px 4px 0 0;min-height:2px}
+footer{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid var(--line)}
+.toast{position:fixed;left:50%;bottom:1.25rem;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:.6rem 1rem;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (max-width:520px){form.add{grid-template-columns:auto 1fr}.strip,.heatwrap{margin-left:0}.add .btn{grid-column:1/-1}}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+main{position:relative;z-index:1}
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;--m:1}
+:root[data-theme=dark] .bg{--m:.55}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .bg{--m:.55}}
+.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:calc((.2 + var(--p,0)*.3)*var(--m));transition:opacity 1.2s;animation:drift 26s ease-in-out infinite alternate}
+.o1{width:46vmax;height:46vmax;left:-14vmax;top:-16vmax;background:#4C7DF0}
+.o2{width:38vmax;height:38vmax;right:-12vmax;top:24vh;background:#2FB38A;animation-duration:32s;animation-delay:-9s}
+.o3{width:34vmax;height:34vmax;left:18vw;bottom:-18vmax;background:#F2A71B;animation-duration:38s;animation-delay:-18s}
+.dots{position:absolute;inset:0;background-image:radial-gradient(var(--line) 1.3px,transparent 1.3px);background-size:28px 28px;-webkit-mask-image:linear-gradient(#000,transparent 80%);mask-image:linear-gradient(#000,transparent 80%)}
+@keyframes drift{to{transform:translate(9vmax,7vmax) scale(1.18)}}
+#ring circle:last-of-type{transition:stroke-dasharray .9s cubic-bezier(.2,.8,.2,1)}
+.sp{position:fixed;width:9px;height:9px;border-radius:50%;pointer-events:none;z-index:50;animation:pop .7s ease-out forwards}
+@keyframes pop{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+.tips{margin:0 0 1rem;padding-left:1.1rem}
+.tips li{margin:.3rem 0}
+.lib{border-top:1px solid var(--line);padding:.9rem 0 .9rem 1rem;position:relative}
+.lib::before{content:"";position:absolute;left:0;top:.9rem;bottom:.9rem;width:4px;border-radius:2px;background:var(--c)}
+.libtop{display:flex;gap:1rem;align-items:flex-start;justify-content:space-between}
+.tag{font:500 .78rem var(--body);color:var(--mute);border:1px solid var(--line);border-radius:99px;padding:.05rem .55rem;margin-left:.5rem;vertical-align:middle}
+.lib details{margin-top:.5rem}
+.lib summary{cursor:pointer;font-weight:600;color:var(--accent)}
+.lib details p{margin:.5rem 0 0;max-width:62ch}
+.lib .btn{white-space:nowrap}
+.lib .btn:disabled{opacity:.5;cursor:default}
+.nav{display:flex;flex-wrap:wrap;gap:.25rem 1.1rem;padding:.7rem 0;border-bottom:1px solid var(--line)}
+.nav a{color:var(--ink);font-weight:600;text-decoration:none;padding:.35rem 0;border-bottom:2px solid transparent}
+.nav a:hover{border-color:var(--accent)}
+.policy{max-width:68ch}
+.policy h3{font:700 1.05rem/1.3 var(--display);margin:1.3rem 0 .2rem}
+.policy p,.policy li{margin:.4rem 0}
+.policy ul{padding-left:1.2rem}
+.hint a{color:var(--accent);font-weight:600}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><div class="dots"></div><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<main>
+<header>
+  <div class="head-text">
+    <h1>Habit Tracker</h1>
+    <p id="date"></p>
+    <p id="sum"></p>
+  </div>
+  <svg id="ring" viewBox="0 0 72 72" role="img" aria-label="Today’s progress"><circle cx="36" cy="36" r="29" fill="none" stroke="var(--line)" stroke-width="7"/><circle id="arc" cx="36" cy="36" r="29" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-dasharray="0 183" transform="rotate(-90 36 36)"/><text id="pct" x="36" y="41" text-anchor="middle">0%</text></svg>
+  <button class="iconbtn" id="theme" aria-label="Switch light or dark theme" title="Switch theme">◐</button>
+</header>
+<nav class="nav" aria-label="Page sections">
+  <a href="#formtitle" data-go="formtitle">Add a habit</a>
+  <a href="#habits" data-go="habits">My habits</a>
+  <a href="#insights" data-go="insights">Insights</a>
+  <a href="#recs-h" data-go="recs-h">Recommended</a>
+  <a href="#best" data-go="best">Best habits</a>
+  <a href="#privacy" data-go="privacy">Privacy Policy</a>
+</nav>
+
+<h2 id="formtitle">Add a habit</h2>
+<form class="add" id="form" autocomplete="off">
+  <select id="emoji" aria-label="Icon">
+    <option>💧</option><option>📚</option><option>🏃</option><option>🧘</option><option>💤</option><option>🥗</option><option>✍️</option><option>🎸</option><option>🧹</option><option>💊</option>
+  </select>
+  <input type="text" id="name" placeholder="e.g. Drink 8 glasses of water" maxlength="60" required aria-label="Habit name">
+  <select id="target" aria-label="Weekly goal">
+    <option value="7">Every day</option><option value="6">6 days a week</option><option value="5">5 days a week</option><option value="4">4 days a week</option><option value="3">3 days a week</option><option value="2">2 days a week</option><option value="1">Once a week</option>
+  </select>
+  <div class="swatches full" id="swatches" role="radiogroup" aria-label="Color"></div>
+  <button class="btn" id="save" type="submit">Add habit</button>
+  <button class="btn ghost" id="cancel" type="button" hidden>Cancel</button>
+</form>
+
+<h2 id="habits">Your habits</h2>
+<div id="list"></div>
+
+<h2 id="insights">Insights</h2>
+<dl class="stats" id="stats"></dl>
+<div class="bars" id="bars" aria-label="Check-ins by weekday"></div>
+
+<h2 id="recs-h">Recommended for you</h2>
+<ul class="tips" id="tips"></ul>
+<div id="recs"></div>
+
+<h2 id="best">Best habits and how they work</h2>
+<p class="hint">Each one pairs a simple cue with a tiny first step. Open “How it works” for an example, then add it to your list.</p>
+<div id="lib"></div>
+
+<section class="policy" aria-labelledby="privacy">
+<h2 id="privacy">Privacy Policy</h2>
+<p>Last updated: October 24, 2026. This policy describes how Habit Tracker handles information. It is a student project, so please use made-up or test data and avoid entering anything sensitive.</p>
+
+<h3>What the app collects and why</h3>
+<p>Habit Tracker has no accounts, sign-in or forms that send data to the developer. The only information involved is what you type in: habit names, the icon, color and weekly goal you choose, and the days you check off. The app uses it to show your habits, streaks, history and insights.</p>
+
+<h3>How information is stored and shared</h3>
+<ul>
+<li>Your habit data is stored in your own browser (localStorage) on your device. The app does not upload it to any server, and the developer cannot see it.</li>
+<li>The app does not use analytics, advertising or tracking cookies, and your data is not sold or shared.</li>
+<li>Google Fonts: the page loads its fonts from Google (fonts.googleapis.com). Google may receive your IP address and browser details when the fonts load, under Google’s own privacy policy.</li>
+<li>Hosting: the site is served by its hosting provider (GitHub Pages), which may keep standard server logs such as your IP address and the time of your visit.</li>
+<li>If you use “Download backup”, a file is saved to your device. Where you keep or send that file is up to you.</li>
+</ul>
+
+<h3>Deleting your information</h3>
+<p>Because your data stays on your device, you control it. Press “Delete everything” at the bottom of the page, or delete a single habit with its Delete button. You can also clear this site’s data in your browser settings. There is nothing stored on a server for the developer to delete.</p>
+
+<h3>Safeguards and limits</h3>
+<p>Keeping data on your device means it is never sent over the internet by this app. It is not encrypted, though, so anyone who can use your browser profile or device can view it. Clearing your browser data, or using private browsing, will erase it unless you saved a backup.</p>
+
+<h3>Contact</h3>
+<p>For privacy questions, contact the developer at <strong>[add your email address here]</strong>.</p>
+</section>
+
+<footer>
+  <button class="btn ghost" id="export">Download backup</button>
+  <button class="btn ghost" id="import">Restore backup</button>
+  <input type="file" id="file" accept="application/json" hidden>
+  <button class="btn ghost" id="sample">Load sample data</button>
+  <button class="btn ghost" id="reset">Delete everything</button>
+</footer>
+<p class="hint">Your habits are saved in this browser only. Download a backup to move them to another device. <a href="#privacy" data-go="privacy">Privacy Policy</a></p>
+</main>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const KEY='habit-tracker-v1';
+const COLORS=['#2FB38A','#F2A71B','#E5584F','#4C7DF0','#9B6BE0','#17A2B8'];
+const DOW=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+let S=load(), editId=null;
+
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&Array.isArray(s.habits))return s}catch(e){}return{habits:[],theme:null,open:null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove('show'),2200)}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const iso=d=>{const z=new Date(d.getTime()-d.getTimezoneOffset()*6e4);return z.toISOString().slice(0,10)};
+const today=()=>iso(new Date());
+const addDays=(s,n)=>{const d=new Date(s+'T00:00:00');d.setDate(d.getDate()+n);return iso(d)};
+const weekStart=s=>addDays(s,-((new Date(s+'T00:00:00').getDay()+6)%7));
+const dayDiff=(a,b)=>Math.round((new Date(a+'T00:00:00')-new Date(b+'T00:00:00'))/864e5);
+
+function streak(h){let d=today();if(!h.done[d])d=addDays(d,-1);let n=0;while(h.done[d]){n++;d=addDays(d,-1)}return n}
+function best(h){let b=0,c=0,p=null;for(const k of Object.keys(h.done).sort()){c=p&&addDays(p,1)===k?c+1:1;b=Math.max(b,c);p=k}return b}
+function weekCount(h){const ws=weekStart(today());let n=0;for(let i=0;i<7;i++)if(h.done[addDays(ws,i)])n++;return n}
+
+function applyTheme(){
+  if(S.theme)document.documentElement.dataset.theme=S.theme;else delete document.documentElement.dataset.theme;
+}
+function setRing(p){const c=2*Math.PI*29;$('#arc').style.strokeDasharray=`${c*p} ${c}`;$('#pct').textContent=Math.round(p*100)+'%'}
+function row(h){
+  const t=today(), ws=weekStart(t), open=S.open===h.id, wc=weekCount(h), st=streak(h);
+  const strip=DOW.map((n,i)=>{const d=addDays(ws,i),on=h.done[d];
+    return `<button class="day${on?' on':''}" ${d>t?'disabled':''} data-a="toggle" data-id="${h.id}" data-d="${d}" aria-pressed="${!!on}" aria-label="${n}, ${d}">${n[0]}</button>`}).join('');
+  let heat='';
+  if(open){const start=addDays(ws,-77);
+    heat=`<div class="heatwrap"><div class="heat" aria-label="Last 12 weeks">`+[...Array(84)].map((_,i)=>{const d=addDays(start,i);
+      return d>t?'<i class="c f"></i>':`<i class="c${h.done[d]?' on':''}" title="${d}"></i>`}).join('')+`</div></div>`}
+  return `<article class="habit" style="--c:${h.color}">
+    <div class="top">
+      <button class="check${h.done[t]?' on':''}" data-a="toggle" data-id="${h.id}" data-d="${t}" aria-pressed="${!!h.done[t]}" aria-label="Mark ${esc(h.name)} done today"></button>
+      <div class="meta">
+        <div class="name">${h.emoji} ${esc(h.name)}</div>
+        <div class="sub"><b>${st}</b> day streak · best ${best(h)} · <b>${wc}/${h.target}</b> this week${wc>=h.target?' ✓':''}</div>
+      </div>
+      <div class="tools">
+        <button data-a="open" data-id="${h.id}" aria-expanded="${open}">${open?'Hide history':'History'}</button>
+        <button data-a="edit" data-id="${h.id}">Edit</button>
+        <button data-a="del" data-id="${h.id}">Delete</button>
+      </div>
+    </div>
+    <div class="strip">${strip}</div>${heat}
+  </article>`;
+}
+function insights(hs){
+  const t=today();let tot=0,hit=0,poss=0,bs=0;const wd=Array(7).fill(0);
+  hs.forEach(h=>{
+    const ks=Object.keys(h.done);tot+=ks.length;bs=Math.max(bs,best(h));
+    const age=Math.max(1,Math.min(30,dayDiff(t,h.created)+1));poss+=age;
+    for(let i=0;i<age;i++)if(h.done[addDays(t,-i)])hit++;
+    ks.forEach(k=>wd[(new Date(k+'T00:00:00').getDay()+6)%7]++);
+  });
+  const rate=poss?Math.round(hit/poss*100):0, mx=Math.max(...wd);
+  $('#stats').innerHTML=[['Total check-ins',tot],['Longest streak',bs+' days'],['Last 30 days',rate+'%'],['Habits',hs.length]]
+    .map(([k,v])=>`<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
+  $('#bars').innerHTML=wd.map((n,i)=>`<div><i style="height:${mx?n/mx*100:0}%" title="${n} check-ins"></i>${DOW[i][0]}</div>`).join('');
+  $('#bars').hidden=!mx;
+}
+function render(){
+  const hs=S.habits,t=today(),n=hs.filter(h=>h.done[t]).length;
+  $('#date').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+  $('#sum').textContent=hs.length?`${n} of ${hs.length} done today`:'Nothing to track yet';
+  const p=hs.length?n/hs.length:0;setRing(p);document.querySelector('.bg').style.setProperty('--p',p);
+  $('#list').innerHTML=hs.length?hs.map(row).join(''):'<p class="empty">No habits yet. Add one above, or load sample data to see how it looks.</p>';
+  insights(hs);
+  $('#tips').innerHTML=tips(hs).map(x=>`<li>${x}</li>`).join('');
+  $('#recs').innerHTML=recs(hs).map(libCard).join('');
+  $('#lib').innerHTML=LIB.map(libCard).join('');
+}
+
+// animation: a small burst of dots from the element you tap
+function burst(el,color,n=12){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+  for(let i=0;i<n;i++){const s=document.createElement('span'),a=i/n*Math.PI*2,d=34+Math.random()*30;
+    s.className='sp';s.style.cssText=`left:${x-4}px;top:${y-4}px;background:${color};--dx:${Math.cos(a)*d}px;--dy:${Math.sin(a)*d}px`;
+    document.body.appendChild(s);setTimeout(()=>s.remove(),750)}
+}
+
+// best-habit library, recommendations and tips
+const LIB=[
+{id:'water',emoji:'💧',name:'Drink a glass of water',cat:'Body',target:7,color:COLORS[3],why:'Even mild dehydration can lower focus and energy.',cue:'After I turn off my alarm, I drink one full glass before coffee.',ex:'Fill a glass and leave it on your nightstand before bed. Drink it first thing in the morning, then tap the check.',easy:'Start with half a glass and add a second one at lunch.'},
+{id:'move',emoji:'🏃',name:'Move for 20 minutes',cat:'Body',target:5,color:COLORS[0],why:'Regular movement improves mood, sleep and heart health.',cue:'After dinner, I put on my shoes and walk around the block.',ex:'Walk for 20 minutes on Monday, Wednesday and Friday. Stretch for 10 minutes on Tuesday and Thursday. That covers a 5-day goal.',easy:'On a bad day, a 5-minute walk still counts and keeps your streak alive.'},
+{id:'sleep',emoji:'💤',name:'In bed by 11 pm',cat:'Rest',target:6,color:COLORS[4],why:'A steady bedtime makes it easier to fall asleep and wake up.',cue:'When my 10:30 pm alarm rings, I plug my phone in across the room.',ex:'Label the alarm “Wind down”. Dim the lights, charge your phone out of reach, and read until you feel sleepy.',easy:'Move your bedtime 15 minutes earlier each week instead of all at once.'},
+{id:'read',emoji:'📚',name:'Read 10 pages',cat:'Mind',target:5,color:COLORS[1],why:'Ten pages a day adds up to roughly 15 books a year.',cue:'After I get into bed, I read before I look at my phone.',ex:'Keep one book on your pillow. Read until you pass the bookmark by about ten pages, then tap the check.',easy:'Stuck? Read one page. Starting is the hard part.'},
+{id:'meditate',emoji:'🧘',name:'Meditate for 5 minutes',cat:'Mind',target:5,color:COLORS[5],why:'A short daily practice lowers stress and builds attention.',cue:'After I brush my teeth, I sit down and breathe for 5 minutes.',ex:'Set a 5-minute timer. Count each breath from 1 to 10, then start over. When your mind wanders, go back to 1.',easy:'Begin with 1 minute and add a minute each week.'},
+{id:'journal',emoji:'✍️',name:'Write 3 lines in a journal',cat:'Mind',target:7,color:COLORS[2],why:'Writing things down clears your head and shows patterns over time.',cue:'After I finish dinner, I write three lines before leaving the table.',ex:'Line 1: one good thing from today. Line 2: one thing that was hard. Line 3: your top priority for tomorrow.',easy:'No time? Write one sentence.'},
+{id:'veg',emoji:'🥗',name:'Eat a fruit or vegetable',cat:'Food',target:7,color:COLORS[0],why:'One extra serving a day is an easy way to eat better without a diet.',cue:'When I sit down for lunch, I add one fruit or vegetable to the plate.',ex:'Keep washed carrots or an apple at the front of the fridge. Put it on your plate first, then tap the check.',easy:'Pick the same item all week so there is nothing to decide.'},
+{id:'tidy',emoji:'🧹',name:'Tidy up for 10 minutes',cat:'Home',target:5,color:COLORS[1],why:'A small daily reset keeps clutter from piling up and lowers stress.',cue:'After I finish dinner, I set a 10-minute timer and tidy one area.',ex:'Monday: kitchen counter. Tuesday: desk. Wednesday: bathroom sink. Stop when the timer ends, even if you are not done.',easy:'Tidy only one surface, like your desk or bed.'}
+];
+const openLib=new Set();
+document.addEventListener('toggle',e=>{const d=e.target;if(d.tagName==='DETAILS'&&d.dataset.id)d.open?openLib.add(d.dataset.id):openLib.delete(d.dataset.id)},true);
+function libCard(l){
+  const added=S.habits.some(h=>h.lib===l.id);
+  return `<article class="lib" style="--c:${l.color}"><div class="libtop"><div><div class="name">${l.emoji} ${l.name}<span class="tag">${l.cat}</span></div><div class="sub">${l.why}</div></div>
+  <button class="btn ghost" data-lib="${l.id}" ${added?'disabled':''}>${added?'Added':'Add'}</button></div>
+  <details data-id="${l.id}"${openLib.has(l.id)?' open':''}><summary>How it works</summary><p><b>Cue:</b> ${l.cue}</p><p><b>Example:</b> ${l.ex}</p><p><b>If it feels hard:</b> ${l.easy}</p></details></article>`;
+}
+function recs(hs){
+  const have=new Set(hs.map(h=>h.lib).filter(Boolean));
+  const cats=new Set(hs.map(h=>(LIB.find(l=>l.id===h.lib)||{}).cat).filter(Boolean));
+  return LIB.filter(l=>!have.has(l.id)).sort((a,b)=>(cats.has(a.cat)-cats.has(b.cat))||LIB.indexOf(a)-LIB.indexOf(b)).slice(0,3);
+}
+function tips(hs){
+  const t=today(),out=[];
+  if(!hs.length)return ['Start with one or two habits. Small wins build momentum faster than a long list.'];
+  const hot=hs.filter(h=>streak(h)>=7).sort((a,b)=>streak(b)-streak(a))[0];
+  if(hot)out.push(`<b>${esc(hot.name)}</b> has a ${streak(hot)}-day streak. Decide tomorrow’s trigger tonight so the chain keeps going.`);
+  const hard=hs.map(h=>{const age=Math.max(1,Math.min(14,dayDiff(t,h.created)+1));let n=0;for(let i=0;i<age;i++)if(h.done[addDays(t,-i)])n++;return{h,age,r:n/age}}).filter(x=>x.age>=7).sort((a,b)=>a.r-b.r)[0];
+  if(hard&&hard.r<.5)out.push(`<b>${esc(hard.h.name)}</b> is slipping. Shrink it to a two-minute version, or lower its weekly goal.`);
+  const wd=Array(7).fill(0);let tot=0;
+  hs.forEach(h=>Object.keys(h.done).forEach(k=>{wd[(new Date(k+'T00:00:00').getDay()+6)%7]++;tot++}));
+  if(tot>=14)out.push(`${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][wd.indexOf(Math.min(...wd))]} is your weakest day. Plan an easier version for it.`);
+  if(hs.every(h=>h.done[t]))out.push('Everything is done today. Rest and enjoy it.');
+  if(!out.length)out.push('Link each habit to something you already do, like “after I pour coffee, I…”. A cue beats willpower.');
+  return out.slice(0,3);
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-lib]');if(!b||b.disabled)return;
+  const l=LIB.find(x=>x.id===b.dataset.lib);if(!l)return;
+  S.habits.push({id:'h'+Date.now().toString(36),lib:l.id,created:today(),done:{},name:l.name,emoji:l.emoji,target:l.target,color:l.color});
+  save();render();toast(`Added “${l.name}”`);
+});
+
+// form
+$('#swatches').innerHTML=COLORS.map((c,i)=>`<label><input type="radio" name="color" value="${c}" ${i?'':'checked'} aria-label="Color ${i+1}"><span style="--c:${c}"></span></label>`).join('');
+function resetForm(){editId=null;$('#form').reset();$('#formtitle').textContent='Add a habit';$('#save').textContent='Add habit';$('#cancel').hidden=true}
+$('#form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=$('#name').value.trim();if(!name)return;
+  const data={name,emoji:$('#emoji').value,target:+$('#target').value,color:document.querySelector('input[name=color]:checked').value};
+  if(editId){Object.assign(S.habits.find(h=>h.id===editId),data);toast('Changes saved')}
+  else{S.habits.push({id:'h'+Date.now().toString(36),created:today(),done:{},...data});toast('Habit added')}
+  save();resetForm();render();
+});
+$('#cancel').onclick=resetForm;
+
+// list actions
+$('#list').addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const h=S.habits.find(x=>x.id===b.dataset.id);if(!h)return;
+  const a=b.dataset.a;
+  if(a==='toggle'){const d=b.dataset.d,all=()=>S.habits.length&&S.habits.every(x=>x.done[today()]),was=all();
+    if(h.done[d])delete h.done[d];else{h.done[d]=1;burst(b,h.color)}
+    save();render();if(!was&&all()){burst($('#ring'),'#4C7DF0',18);toast('All done for today 🎉')}}
+  else if(a==='open'){S.open=S.open===h.id?null:h.id;save();render()}
+  else if(a==='edit'){editId=h.id;$('#name').value=h.name;$('#emoji').value=h.emoji;$('#target').value=h.target;
+    document.querySelector(`input[name=color][value="${h.color}"]`).checked=true;
+    $('#formtitle').textContent='Edit habit';$('#save').textContent='Save changes';$('#cancel').hidden=false;
+    $('#form').scrollIntoView({behavior:'smooth'});$('#name').focus()}
+  else if(a==='del'&&confirm(`Delete “${h.name}” and its history?`)){S.habits=S.habits.filter(x=>x!==h);save();render();toast('Habit deleted')}
+});
+
+// footer
+$('#theme').onclick=()=>{
+  const dark=document.documentElement.dataset.theme==='dark'||(!S.theme&&matchMedia('(prefers-color-scheme:dark)').matches);
+  S.theme=dark?'light':'dark';save();applyTheme();
+};
+$('#export').onclick=()=>{
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:'application/json'}));
+  a.download='habit-backup-'+today()+'.json';a.click();URL.revokeObjectURL(a.href);
+};
+$('#import').onclick=()=>$('#file').click();
+$('#file').onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  f.text().then(t=>{
+    const d=JSON.parse(t);
+    if(!Array.isArray(d.habits))throw 0;
+    S={habits:d.habits.filter(h=>h&&h.id&&h.name&&h.done),theme:d.theme||null,open:null};
+    save();applyTheme();render();toast('Backup restored');
+  }).catch(()=>toast('That file isn’t a valid backup'));
+  e.target.value='';
+};
+$('#sample').onclick=()=>{
+  if(S.habits.length&&!confirm('Add sample habits to your list?'))return;
+  let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  [['💧','Drink 8 glasses of water',7,COLORS[3],.8],['📚','Read 20 pages',5,COLORS[1],.6],['🏃','Go for a run',3,COLORS[0],.45]].forEach(([emoji,name,target,color,p],i)=>{
+    const done={};for(let k=0;k<70;k++)if(rnd()<p)done[addDays(today(),-k)]=1;
+    S.habits.push({id:'s'+i+Date.now().toString(36),created:addDays(today(),-70),emoji,name,target,color,done});
+  });
+  save();render();toast('Sample data added');
+};
+$('#reset').onclick=()=>{if(confirm('Delete all habits and history? This cannot be undone.')){S.habits=[];S.open=null;save();render()}};
+
+document.addEventListener('click',e=>{
+  const a=e.target.closest('a[data-go]');if(!a)return;
+  e.preventDefault();const el=document.getElementById(a.dataset.go);
+  if(el){el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});el.setAttribute('tabindex','-1');el.focus({preventScroll:true})}
+});
+
+applyTheme();render();
+</script>
+</body>
+</html>
